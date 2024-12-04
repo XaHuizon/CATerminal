@@ -998,6 +998,7 @@ then
                         else
                             echo -e "\033[0;35;1m[CL]\033[0;33;1m已取消启动 新版本CA终端位于'\033[0;36;1m${GIT_OK_PATH}CA终端.bash\033[0;33;1m'目录\033[0m"
                             REBOOTCA
+                        fi
                     else
                         echo -e "\033[0;31;1m[!]\033[0;33;1m无法下载最新版本CA终端 检查网络后再试一次\033[0m"
                         REBOOTCA
