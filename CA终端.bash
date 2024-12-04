@@ -33,7 +33,7 @@ fi
 AVB="$ECHO_AB"
 echo -e "$ECHO_AB"
 }
-NOWV_="V_5.3.0-Official正式版"
+NOWV_="V_5.3.6-Official正式版"
 THE_LOG="/storage/emulated/0/Termux_Log/Termux.log"
 THE_LOG_PATH="/storage/emulated/0/Termux_Log/"
 # -------------填充函数->>
