@@ -1020,7 +1020,7 @@ then
         fi
     else
         echo -e "$COLOR[CA]\033[0;33;1m已取消检测更新 点按回车返回主页\033[0m"
-        REBOOR_RE
+        REBOOT_RE
     fi
 else
     if [ -z "$CAONE" ]
