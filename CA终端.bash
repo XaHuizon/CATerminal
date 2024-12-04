@@ -33,7 +33,7 @@ fi
 AVB="$ECHO_AB"
 echo -e "$ECHO_AB"
 }
-NOWV_="V_5.3.6-Official正式版"
+NOWV_="V_5.3.0-Official正式版"
 THE_LOG="/storage/emulated/0/Termux_Log/Termux.log"
 THE_LOG_PATH="/storage/emulated/0/Termux_Log/"
 # -------------填充函数->>
@@ -722,7 +722,10 @@ then
  - 优化'命令行'界面命令执行
 [版本]>V_5.3.0-Official正式版
  - '安装Termux软件包'页面新增apt/pkg管理器可选
- - 优化界面显示"
+ - 优化界面显示
+[版本]>V_5.3.6-Official正式版
+ - 将原'设置CA终端'功能改为'云更新CA终端'并完善功能
+ "
     IFS=$'\n'
     echo -e -n "$COLOR [CA]\033[0;33;1m正在打开更新日志界面...\033[0m\r"
     sleep 0.3
@@ -966,7 +969,7 @@ then
         GITURL=$(echo aHR0cHM6Ly9naXRodWIuY29tL1hhSHVpem9uL0NBVGVybWluYWwK | base64 -d)
         NEWURL=$(echo aHR0cHM6Ly9naXRodWIuY29tL1hhSHVpem9uL05FV1ZTCg== | base64 -d)
         echo -e "\033[0;33;1m->正在从云端获取新版本信息...\033[0m"
-        rm -rf $GIT_OK_PATH{,.[!.],}*
+        rm -rf $GIT_OK_PATH{,.[!.],}* &>>$THE_LOG
         if git clone $NEWURL $GIT_OK_PATH &>>$THE_LOG
         then
             NOW_VS=$(echo $NOWV_ | cut -c3-7)
@@ -981,8 +984,8 @@ then
                 if [ "$NEW_YN" = "1" ] || [ "$NEW_YN" = "是" ]
                 then
                     echo -e "\033[0;33;1m->正在下载最新版本...\033[0m"
-                    rm -rf $GIT_OK_PATH{,.[!.],}*
-                    if git clone $GITURL $GIT_OK_PATH
+                    rm -rf $GIT_OK_PATH{,.[!.],}* &>>$THE_LOG
+                    if git clone $GITURL $GIT_OK_PATH &>>$THE_LOG
                     then
                         echo -e "\033[0;32;1m - 下载完成 \033[0m"
                         echo -e "\033[0;33;1m[>]新版本CA终端文件位于'\033[0;36;1m$GIT_OK_PATH\033[0;33;1m'文件夹\033[0m"
@@ -993,7 +996,7 @@ then
                         then
                             echo -e "\033[0;35;1m[START]\033[0;33;1m正在启动最新版本CA终端 \033[0;36;1m版本>$NEW_VS\033[0;33;1m...\033[0m"
                             bash ${GIT_OK_PATH}CA终端.bash
-                            echo -e "$COLOR[CA]\033[0;33;1m已退出最新版本CA终端 点按回车返回主页\033[0m"
+                            echo -e -n "$COLOR[CA]\033[0;33;1m已退出最新版本CA终端 点按回车返回主页\033[0m"
                             REBOOT_RE
                         else
                             echo -e "\033[0;35;1m[CL]\033[0;33;1m已取消启动 新版本CA终端位于'\033[0;36;1m${GIT_OK_PATH}CA终端.bash\033[0;33;1m'目录\033[0m"
