@@ -976,6 +976,7 @@ then
             NOW_VS=$(echo $NOWV_ | cut -c3-7)
             NEW_VS=$(cat $GIT_OK_PATH/NEW)
             NEW_VS_UN=$(echo "$NEW_VS" | cut -c3-7)
+            rm -rf $GIT_OK_PATH{,.[!.],}* &>>$THE_LOG
             if [ "$NOW_VS" \< "$NEW_VS_UN" ]
             then
                 echo -e "\033[0;35;1m[UP]\033[0;33;1m发现新版本: \033[0;36;1m$NEW_VS\033[0m"
