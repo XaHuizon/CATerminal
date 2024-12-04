@@ -123,6 +123,7 @@ then
         mkdir -p $THE_LOG_PATH
         touch $THE_LOG &>>$THE_LOG
         pkg install tsu -y &>>$THE_LOG
+        pkg install git -y &>>$THE_LOG
         termux-setup-storage -y &>>$THE_LOG
         touch TSU_IS_OKAY &>>$THE_LOG
     fi
