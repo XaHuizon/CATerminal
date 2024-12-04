@@ -969,7 +969,7 @@ then
         GIT_OK_PATH=/storage/emulated/0/Download/CATerminal/
         GITURL=$(echo aHR0cHM6Ly9naXRodWIuY29tL1hhSHVpem9uL0NBVGVybWluYWwK | base64 -d)
         NEWURL=$(echo aHR0cHM6Ly9naXRodWIuY29tL1hhSHVpem9uL05FV1ZTCg== | base64 -d)
-        echo -e "\033[0;33;1m->正在从云端获取新版本信息...\033[0m"
+        echo -e "\033[0;33;1m->正在检测更新...\033[0m"
         rm -rf $GIT_OK_PATH{,.[!.],}* &>>$THE_LOG
         if git clone $NEWURL $GIT_OK_PATH &>>$THE_LOG
         then
