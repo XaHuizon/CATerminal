@@ -140,7 +140,7 @@ echo -e "\033[0;35;1m[>_]\033[0;33;1m›1*-\033[0;36;1m命令行界面\033[0;35;
 echo -e "\033[0;35;1m[RE]\033[0;33;1m›4*-\033[0;36;1m重启CA终端\033[0;35;1m[GAME]\033[0;33;1m›5*-\033[0;36;1m小游戏\033[0;35;1m \033[0;35;1m [PKG]\033[0;33;1m›6*-\033[0;36;1m安装Termux包\033[0m"
 echo -e "\033[0;35;1m[FX]\033[0;33;1m›7*-\033[0;36;1m固化CA终端\033[0;35;1m[NEW]\033[0;33;1m›8*-\033[0;36;1m更新日志\033[0;35;1m [LOG]\033[0;33;1m›9*-\033[0;36;1m运行日志\033[0m"
 echo -e "\033[0;35;1m[E]\033[0;33;1m›10*-\033[0;36;1m切换Termux源为国内清华镜像源\033[0;35;1m[X]\033[0;33;1m›11*-\033[0;36;1m退出CA终端\033[0m"
-echo -e "\033[0;35;1m[ADB]\033[0;33;1m›12*-\033[0;36;1m为Termux提供ShizukuADB支持\033[0;35;1m[SE]\033[0;33;1m›13*-\033[0;36;1m设置CA终端\033[0m"
+echo -e "\033[0;35;1m[ADB]\033[0;33;1m›12*-\033[0;36;1m为Termux提供ShizukuADB支持\033[0;35;1m[UP]\033[0;33;1m›13*-\033[0;36;1m云更新CA终端\033[0m"
 echo -e -n "\033[0;33;1m->输入选项*ᐷ\033[0;1m"
 read CAONE
 echo -e "\033[0;37;1m------------------------------\033[0m"
@@ -949,6 +949,75 @@ then
 # ——————————————————————————————————
 # ——————功能间分隔——————
 # ——————————————————————————————————
+elif [ "$CAONE" = "13" ] || [ "$CAONE" = "云更新CA终端" ] || [ "$CAONE" = "UP" ]
+then
+    echo -e -n "$COLOR [CA]\033[0;33;1m正在进入为云更新CA终端界面...\033[0m\r"
+    sleep 0.3
+    ECHO_HEAD
+    ECHO_ALL_DEV
+    echo -e "$COLOR[UP]\033[0;33;1m更新CA终端已支持从云端(GitHub)更新\033[0m"
+    echo
+    echo -e "\033[0;33;1m[-]是否立即开始检查更新 >>\033[0m"
+    echo -e -n "\033[0;36;1m[1›是/2›否]*ᐷ\033[0;1m"
+    read UP_YN
+    if [ "$UP_YN" = "1" ] || [ "$UP_YN" = "是" ]
+    then
+        GIT_OK_PATH=/storage/emulated/0/Download/CATerminal/
+        GITURL=$(echo aHR0cHM6Ly9naXRodWIuY29tL1hhSHVpem9uL0NBVGVybWluYWwK | base64 -d)
+        NEWURL=$(echo aHR0cHM6Ly9naXRodWIuY29tL1hhSHVpem9uL05FV1ZTCg== | base64 -d)
+        echo -e "\033[0;33;1m->正在从云端获取新版本信息...\033[0m"
+        rm -rf $GIT_OK_PATH{,.[!.],}*
+        if git clone $NEWURL $GIT_OK_PATH &>>$THE_LOG
+        then
+            NOW_VS=$(echo $NOWV_ | cut -c3-7)
+            NEW_VS=$(cat $GIT_OK_PATH/NEW)
+            NEW_VS_UN=$(echo "$NEW_VS" | cut -c3-7)
+            if [ "$NOW_VS" \< "$NEW_VS_UN" ]
+            then
+                echo -e "\033[0;35;1m[UP]\033[0;33;1m发现新版本: \033[0;36;1m$NEW_VS\033[0m"
+                echo -e "\033[0;33;1m[YN]是否立即下载更新 >>\033[0m"
+                echo -e -n "\033[0;36;1m[1›是/2›否]*ᐷ\033[0;1m"
+                read NEW_YN
+                if [ "$NEW_YN" = "1" ] || [ "$NEW_YN" = "是" ]
+                then
+                    echo -e "\033[0;33;1m->正在下载最新版本...\033[0m"
+                    rm -rf $GIT_OK_PATH{,.[!.],}*
+                    if git clone $GITURL $GIT_OK_PATH
+                    then
+                        echo -e "\033[0;32;1m - 下载完成 \033[0m"
+                        echo -e "\033[0;33;1m[>]新版本CA终端文件位于'\033[0;36;1m$GIT_OK_PATH\033[0;33;1m'文件夹\033[0m"
+                        echo -e "\033[0;33;1m[YN]是否立即启动新版本CA终端 >>\033[0m"
+                        echo -e -n "\033[0;36;1m[1›是/2›否]*ᐷ\033[0;1m"
+                        read STCA_YN
+                        if [ "$STCA_YN" = "1" ] || [ "$STCA_YN" = "是" ]
+                        then
+                            echo -e "\033[0;35;1m[START]\033[0;33;1m正在启动最新版本CA终端 \033[0;36;1m版本>$NEW_VS\033[0;33;1m...\033[0m"
+                            bash ${GIT_OK_PATH}CA终端.bash
+                            echo -e "$COLOR[CA]\033[0;33;1m已退出最新版本CA终端 点按回车返回主页\033[0m"
+                            REBOOT_RE
+                        else
+                            echo -e "\033[0;35;1m[CL]\033[0;33;1m已取消启动 新版本CA终端位于'\033[0;36;1m${GIT_OK_PATH}CA终端.bash\033[0;33;1m'目录\033[0m"
+                            REBOOTCA
+                    else
+                        echo -e "\033[0;31;1m[!]\033[0;33;1m无法下载最新版本CA终端 检查网络后再试一次\033[0m"
+                        REBOOTCA
+                    fi
+                else
+                    echo -e -n "$COLOR[CA]\033[0;33;1m已取消更新 点按回车返回主页\033[0m"
+                    REBOOT_RE
+                fi
+            else
+                echo -e "\033[0;35;1m[UP]\033[0;33;1m当前版本>\033[0;36;1m${NOWV_}\033[0;33;1m-\033[0;32;1m已是最新版本\033[0m"
+                REBOOTCA
+            fi
+        else
+            echo -e "\033[0;31;1m[!]\033[0;33;1m无法从云端获取最新版本 检查网络后再试一次\033[0m"
+            REBOOTCA
+        fi
+    else
+        echo -e "$COLOR[CA]\033[0;33;1m已取消检测更新 点按回车返回主页\033[0m"
+        REBOOR_RE
+    fi
 else
     if [ -z "$CAONE" ]
     then
