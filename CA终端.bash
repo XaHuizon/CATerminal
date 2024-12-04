@@ -11,9 +11,10 @@ UINAME=$(getprop ro.build.display.id)
 KERNEL=$(uname -r)
 ABLOCK=$(getprop ro.build.ab_update)
 WIFI=$(getprop gsm.version.baseband | sed 's/,.*//' | sed 's/,//g')
-BASE_BAK=$(echo  | base64 -d)
-BASE_OK=$(echo  | base64 -d)
-AVB() {
+ROOT_OKAY_A=/data/data/com.termux/files/usr/bin/git
+ROOT_OKAY_B=/data/data/com.termux/files/usr/bin/tsu
+GAME_OKAY=/data/data/com.termux/files/usr/bin/bastet
+android-avb() {
 if [ "$ABLOCK" = "true" ]
 then
     AORB=$(getprop ro.boot.slot_suffix)
@@ -86,7 +87,7 @@ ECHO_COM_A() {
     echo -e "\033[0;32;1m[>]\033[0;33;1m部分常用命令 >>\033[0m"
     echo -e "\033[0;33;1m - 换源:\033[0;36;1m termux-change-repo \033[0;33;1m- 请求存储: \033[0;36;1mtermux-setup-storage\033[0m"
     echo -e "\033[0;33;1m - 查询: \033[0;36;1mpkg search [名称]\033[0;33;1m  - 切换ROOT: \033[0;36;1msu/tsu/sudo\033[0m"
-    echo -e "\033[0;33;1m - 恢复工作目录: \033[0;36;1mtermux-path\033[0m"
+    echo -e "\033[0;33;1m - 恢复工作目录: \033[0;36;1mtermux-path\033[0;33;1m- 查看AVB: \033[0;36;1mandroid-avb\033[0m"
     echo
 }
 termux-path() {
@@ -109,7 +110,7 @@ fi
 ECHO_HEAD
 if [ "$PREFIX" = "$MD5" ]
 then
-    if [ -f "TSU_IS_OKAY" ] && [ -f "$THE_LOG" ]
+    if [ -f "$ROOT_OKAY_A" ] && [ -f "$THE_LOG" ] && [ -f "$GAME_OKAY" ] && [ -f "$ROOT_OKAY_B" ]
     then
         LOGKB=$(stat -c%s "$THE_LOG")
         if [ $LOGKB -gt 10240 ]
@@ -183,13 +184,12 @@ then
     elif [ "$EXEC" = "ls" ]
     then
         echo -e "\033[0;35;1m[LS]\033[0;33;1m文件/权限列表 >>\033[0m"
-        ECHO_TIME_LS=$(timeout 3 ls)
+        timeout 3 ls
         if [ "$?" = "124" ]
         then
             echo -e "\033[0;31;1m[!]\033[0;33;1mls命令超时未列出列表 已强制终止\033[0m"
             continue
-         fi
-         echo -e "\033[0;36;1m$(echo -e "$ECHO_TIME_LS" | sed 's/^/ - /')\033[0m"
+        fi
          continue
     elif [ "$EXEC" = "su" ] || [ "$EXEC" = "tsu" ] || [ "$EXEC" = "sudo" ]
     then
