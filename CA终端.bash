@@ -988,7 +988,7 @@ then
                     if git clone $GITURL $GIT_OK_PATH &>>$THE_LOG
                     then
                         echo -e "\033[0;32;1m - 下载完成 \033[0m"
-                        echo -e "\033[0;33;1m[>]新版本CA终端文件位于'\033[0;36;1m$GIT_OK_PATH\033[0;33;1m'文件夹\033[0m"
+                        echo -e "\033[0;33;1m[>]新版本CA终端文件位于'\033[0;36;1m$GIT_OK_PATH\033[0;33;1m'\033[0m"
                         echo -e "\033[0;33;1m[YN]是否立即启动新版本CA终端 >>\033[0m"
                         echo -e -n "\033[0;36;1m[1›是/2›否]*ᐷ\033[0;1m"
                         read STCA_YN
