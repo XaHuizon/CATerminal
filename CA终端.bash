@@ -34,7 +34,7 @@ fi
 AVB="$ECHO_AB"
 echo -e "$ECHO_AB"
 }
-NOWV_="V_5.3.7-Official正式版"
+NOWV_="V_5.4.1-Official正式版"
 THE_LOG="/storage/emulated/0/Termux_Log/Termux.log"
 THE_LOG_PATH="/storage/emulated/0/Termux_Log/"
 # -------------填充函数->>
@@ -722,7 +722,9 @@ then
 [版本]>V_5.3.6-Official正式版
  - 将原'设置CA终端'功能改为'云更新CA终端'并完善功能
 [版本]>V_5.3.7-Official正式版
- - 将原GitHub的更新切换为Gitee 修复部分设备无法下载新版本信息"
+ - 将原GitHub的更新切换为Gitee 修复部分设备无法下载新版本信息
+[版本]>V_5.4.0-Official正式版
+ - '云更新CA终端'界面新增可查看下版本更新内容"
     IFS=$'\n'
     echo -e -n "$COLOR [CA]\033[0;33;1m正在打开更新日志界面...\033[0m\r"
     sleep 0.3
@@ -970,12 +972,21 @@ then
         if git clone $NEWURL $GIT_OK_PATH &>>$THE_LOG
         then
             NOW_VS=$(echo $NOWV_ | cut -c3-7)
-            NEW_VS=$(cat $GIT_OK_PATH/NEW)
+            NEW_VS=$(cat ${GIT_OK_PATH}NEW)
             NEW_VS_UN=$(echo "$NEW_VS" | cut -c3-7)
-            rm -rf $GIT_OK_PATH{,.[!.],}* &>>$THE_LOG
+            UP_LOG=$(cat ${GIT_OK_PATH}UP_LOG.txt)
+            
             if [ "$NOW_VS" \< "$NEW_VS_UN" ]
             then
                 echo -e "\033[0;35;1m[UP]\033[0;33;1m发现新版本: \033[0;36;1m$NEW_VS\033[0m"
+                echo -e "\033[0;33;1m[-]本次更新 >>\033[0m"
+                echo -e "\033[0;32;1m[>]\033[0;33;1m[当前:\033[0;36;1m$NOWV_ \033[0;32;1m>>\033[0;33;1m 最新:\033[0;36;1m$NEW_VS\033[0;33;1m]\033[0m"
+                IFS=$'\n'
+                for NEW_ONE in $UP_LOG
+                do
+                    sleep 0.02
+                    echo -e "\033[0;36;1m$NEW_ONE\033[0m"
+                done
                 echo -e "\033[0;33;1m[YN]是否立即下载更新 >>\033[0m"
                 echo -e -n "\033[0;36;1m[1›是/2›否]*ᐷ\033[0;1m"
                 read NEW_YN
