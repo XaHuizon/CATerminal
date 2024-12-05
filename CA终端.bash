@@ -34,7 +34,7 @@ fi
 AVB="$ECHO_AB"
 echo -e "$ECHO_AB"
 }
-NOWV_="V_5.3.6-Official正式版"
+NOWV_="V_5.3.7-Official正式版"
 THE_LOG="/storage/emulated/0/Termux_Log/Termux.log"
 THE_LOG_PATH="/storage/emulated/0/Termux_Log/"
 # -------------填充函数->>
@@ -64,20 +64,15 @@ ECHO_HEAD() {
 }
 ECHO_ALL_DEV() {
     sleep 0.1
-    echo -e -n "$COLOR   ______  _     |\033[0m"
-    echo -e "\033[0;33;1m设备:\033[0;32;1m$DEVTWO ($DEVONE)\033[0m"
+    echo -e "$COLOR   ______  _     |\033[0;33;1m设备:\033[0;32;1m$DEVTWO ($DEVONE)\033[0m"
     sleep 0.04
-    echo -e -n "$COLOR  / ____/ / \\    |\033[0m"
-    echo -e "\033[0;33;1mCPU:\033[0;32;1m$CPUNAME\033[0;33;1m/核心:\033[0;32;1m$CPUUN核\033[0m"
+    echo -e "$COLOR  / ____/ / \\    |\033[0;33;1mCPU:\033[0;32;1m$CPUNAME\033[0;33;1m/核心:\033[0;32;1m$CPUUN核\033[0m"
     sleep 0.04
-    echo -e -n "$COLOR  | |    / | \\   |\033[0m"
-    echo -e "\033[0;33;1m内核:\033[0;32;1m$KERNEL\033[0m"
+    echo -e "$COLOR  | |    / | \\   |\033[0;33;1m内核:\033[0;32;1m$KERNEL\033[0m"
     sleep 0.04
-    echo -e -n "$COLOR  | |___/ ___ \\  |\033[0m"
-    echo -e "\033[0;33;1m基带:\033[0;32;1m$WIFI\033[0m"
+    echo -e "$COLOR  | |___/ ___ \\  |\033[0;33;1m基带:\033[0;32;1m$WIFI\033[0m"
     sleep 0.04
-    echo -e -n "$COLOR  \\____/_/   \\_\\ |\033[0m"
-    echo -e "\033[0;33;1m系统:\033[0;32;1m$UINAME\033[0;33;1m/\033[0;32;1mAndroid $OSV\033[0m"
+    echo -e "$COLOR  \\____/_/   \\_\\ |\033[0;33;1m系统:\033[0;32;1m$UINAME\033[0;33;1m/\033[0;32;1mAndroid $OSV\033[0m"
     echo -e "\033[0;30;1m===========================================================\033[0m"
     sleep 0.5
     echo -e "$COLOR[CA]\033[0;33;1m当前时间:[\033[0;32;1m$(date +%Y.%m.%d) - $(date +%H:%M:%S)\033[0;33;1m] Ξ \033[0;33;1m当前用户UID:[$COLOR$UID\033[0;33;1m]\033[0m"
@@ -726,7 +721,8 @@ then
  - 优化界面显示
 [版本]>V_5.3.6-Official正式版
  - 将原'设置CA终端'功能改为'云更新CA终端'并完善功能
- "
+[版本]>V_5.3.7-Official正式版
+ - 将原GitHub的更新切换为Gitee 修复部分设备无法下载新版本信息"
     IFS=$'\n'
     echo -e -n "$COLOR [CA]\033[0;33;1m正在打开更新日志界面...\033[0m\r"
     sleep 0.3
@@ -959,7 +955,7 @@ then
     sleep 0.3
     ECHO_HEAD
     ECHO_ALL_DEV
-    echo -e "$COLOR[UP]\033[0;33;1m更新CA终端已支持从云端(GitHub)更新\033[0m"
+    echo -e "$COLOR[UP]\033[0;33;1m更新CA终端已支持从云端(Gitee)更新\033[0m"
     echo
     echo -e "\033[0;33;1m[-]是否立即开始检查更新 >>\033[0m"
     echo -e -n "\033[0;36;1m[1›是/2›否]*ᐷ\033[0;1m"
@@ -967,8 +963,8 @@ then
     if [ "$UP_YN" = "1" ] || [ "$UP_YN" = "是" ]
     then
         GIT_OK_PATH=/storage/emulated/0/Download/CATerminal/
-        GITURL=$(echo aHR0cHM6Ly9naXRodWIuY29tL1hhSHVpem9uL0NBVGVybWluYWwK | base64 -d)
-        NEWURL=$(echo aHR0cHM6Ly9naXRodWIuY29tL1hhSHVpem9uL05FV1ZTCg== | base64 -d)
+        GITURL=$(echo aHR0cHM6Ly9naXRlZS5jb20vWGFIdWktR2l0SHViL0NBVGVybWluYWwK | base64 -d)
+        NEWURL=$(echo aHR0cHM6Ly9naXRlZS5jb20vWGFIdWktR2l0SHViL05FV1ZTCg== | base64 -d)
         echo -e "\033[0;33;1m->正在检测更新...\033[0m"
         rm -rf $GIT_OK_PATH{,.[!.],}* &>>$THE_LOG
         if git clone $NEWURL $GIT_OK_PATH &>>$THE_LOG
@@ -1021,7 +1017,7 @@ then
             REBOOTCA
         fi
     else
-        echo -e "$COLOR[CA]\033[0;33;1m已取消检测更新 点按回车返回主页\033[0m"
+        echo -e -n "$COLOR[CA]\033[0;33;1m已取消检测更新 点按回车返回主页\033[0m"
         REBOOT_RE
     fi
 else
