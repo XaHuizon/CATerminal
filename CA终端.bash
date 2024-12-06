@@ -34,7 +34,8 @@ fi
 AVB="$ECHO_AB"
 echo -e "$ECHO_AB"
 }
-NOWV_="V_5.4.1-Official正式版"
+NOW_ALL_VS=10002
+NOWV_="V_5.4.6-Official正式版"
 THE_LOG="/storage/emulated/0/Termux_Log/Termux.log"
 THE_LOG_PATH="/storage/emulated/0/Termux_Log/"
 # -------------填充函数->>
@@ -105,7 +106,7 @@ fi
 ECHO_HEAD
 if [ "$PREFIX" = "$MD5" ]
 then
-    if [ -f "$ROOT_OKAY_A" ] && [ -f "$THE_LOG" ] && [ -f "$GAME_OKAY" ] && [ -f "$ROOT_OKAY_B" ]
+    if [ -f "$ROOT_OKAY_A" ] && [ -f "$THE_LOG" ] && [ -f "$ROOT_OKAY_B" ]
     then
         LOGKB=$(stat -c%s "$THE_LOG")
         if [ $LOGKB -gt 10240 ]
@@ -121,7 +122,6 @@ then
         pkg install tsu -y &>>$THE_LOG
         pkg install git -y &>>$THE_LOG
         termux-setup-storage -y &>>$THE_LOG
-        touch TSU_IS_OKAY &>>$THE_LOG
     fi
 else
     ECHO_ALL_DEV
@@ -351,7 +351,7 @@ then
         ECHO_ALL_DEV
         echo -e "$COLOR[GAME]\033[0;33;1m在Termux服务器中的一些小游戏命令都可以直接通过输入对应选项进入游戏\033[0m"
         echo
-        if [ -f "GAME_IS_OKAY" ]
+        if [ -f "$GAME_OKAY" ]
         then
             sleep 0
         else
@@ -724,7 +724,16 @@ then
 [版本]>V_5.3.7-Official正式版
  - 将原GitHub的更新切换为Gitee 修复部分设备无法下载新版本信息
 [版本]>V_5.4.0-Official正式版
- - '云更新CA终端'界面新增可查看下版本更新内容"
+ - '云更新CA终端'界面新增可查看下版本更新内容
+[版本]>V_5.4.1-Official正式版
+ - 修复'云更新Ca终端'界面无法查看新版本更新日志的bug
+[版本]>V_5.4.3-Official正式版
+ - 优化'云更新CA终端'中版本号比对逻辑
+[版本]>V_5.4.5-Official正式版
+ - 优化'云更新CA终端'界面显示
+ - 优化'小游戏'功能校验
+[版本]>V_5.4.6-Official正式版
+ - 修复'云更新CA终端'中某些情况下无法检测到新版本"
     IFS=$'\n'
     echo -e -n "$COLOR [CA]\033[0;33;1m正在打开更新日志界面...\033[0m\r"
     sleep 0.3
@@ -971,16 +980,15 @@ then
         rm -rf $GIT_OK_PATH{,.[!.],}* &>>$THE_LOG
         if git clone $NEWURL $GIT_OK_PATH &>>$THE_LOG
         then
-            NOW_VS=$(echo $NOWV_ | cut -c3-7)
             NEW_VS=$(cat ${GIT_OK_PATH}NEW)
-            NEW_VS_UN=$(echo "$NEW_VS" | cut -c3-7)
             UP_LOG=$(cat ${GIT_OK_PATH}UP_LOG.txt)
-            
-            if [ "$NOW_VS" \< "$NEW_VS_UN" ]
+            NEW_ALL_VS=$(echo "$NEW_VS" | head -n 1)
+            NEW_VS_ONE=$(echo "$NEW_VS" | sed -n '2p')
+            if [ "$NOW_ALL_VS" -lt "$NEW_ALL_VS" ]
             then
-                echo -e "\033[0;35;1m[UP]\033[0;33;1m发现新版本: \033[0;36;1m$NEW_VS\033[0m"
+                echo -e "\033[0;35;1m[UP]\033[0;33;1m发现新版本: \033[0;36;1m$NEW_VS_ONE\033[0m"
                 echo -e "\033[0;33;1m[-]本次更新 >>\033[0m"
-                echo -e "\033[0;32;1m[>]\033[0;33;1m[当前:\033[0;36;1m$NOWV_ \033[0;32;1m>>\033[0;33;1m 最新:\033[0;36;1m$NEW_VS\033[0;33;1m]\033[0m"
+                echo -e "\033[0;32;1m[>]\033[0;33;1m[版本:\033[0;36;1m$NOWV_ \033[0;35;1m>>\033[0;33;1m \033[0;36;1m$NEW_VS_ONE\033[0;33;1m]\033[0m"
                 IFS=$'\n'
                 for NEW_ONE in $UP_LOG
                 do
@@ -1003,7 +1011,7 @@ then
                         read STCA_YN
                         if [ "$STCA_YN" = "1" ] || [ "$STCA_YN" = "是" ]
                         then
-                            echo -e "\033[0;35;1m[START]\033[0;33;1m正在启动最新版本CA终端 \033[0;36;1m版本>$NEW_VS\033[0;33;1m...\033[0m"
+                            echo -e "\033[0;35;1m[START]\033[0;33;1m正在启动最新版本CA终端 \033[0;36;1m版本>$NEW_VS_ONE\033[0;33;1m...\033[0m"
                             bash ${GIT_OK_PATH}CA终端.bash
                             echo -e -n "$COLOR[CA]\033[0;33;1m已退出最新版本CA终端 点按回车返回主页\033[0m"
                             REBOOT_RE
