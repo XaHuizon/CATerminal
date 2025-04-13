@@ -34,7 +34,7 @@ fi
 AVB="$ECHO_AB"
 echo -e "$ECHO_AB"
 }
-NOW_ALL_VS=10003
+NOW_ALL_VS=10002
 NOWV_="V_5.4.6-Official正式版"
 THE_LOG="/storage/emulated/0/Termux_Log/Termux.log"
 THE_LOG_PATH="/storage/emulated/0/Termux_Log/"
