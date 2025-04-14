@@ -69,7 +69,7 @@ CA终端是一个专为Termux设计的增强型脚本终端，旨在简化Termux
 ### 5. Shizuku ADB支持
 - 通过rish为Termux提供ADB权限支持，需提供：
 - rish可执行文件
-- rish_shizuku.dex文件
+- rish_shizuku.dex配置文件
 
 ## 高级功能
 
